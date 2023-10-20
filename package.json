@@ -1,0 +1,36 @@
+{
+  "name": "pawtech-api",
+  "version": "1.0.0",
+  "description": "API for Pawtech Frontend",
+  "engines": {
+    "node": "16.14.0",
+    "npm": "8.3.1"
+  },
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "heroku-postbuild": "npm install && npm run build"
+  },
+  "author": "abdulwahab-sa",
+  "license": "ISC",
+  "dependencies": {
+    "@joi/date": "^2.1.0",
+    "@prisma/client": "^5.1.1",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prisma": "^5.1.1"
+  }
+}
