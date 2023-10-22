@@ -34,6 +34,6 @@ router.route('/loginuser').post(loginUserController);
 
 // DELETE ROUTES
 router.route('/deletepet/:petId').delete(protect, deletePetController);
-router.route('/deletereminder/:id').delete(protect, deleteReminderController);
+router.route('/deletereminder/:reminderId').delete(protect, deleteReminderController);
 
 module.exports = router;

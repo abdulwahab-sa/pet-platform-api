@@ -14,7 +14,7 @@ const createPetSchema = Joi.object({
 	petName: Joi.string().min(3).required(),
 	species: Joi.string().min(3).required(),
 	breed: Joi.string().min(3).required(),
-	birthDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY']).required(),
+	birthDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD']).required(),
 	color: Joi.string().min(3).required(),
 	weight: Joi.string().required(),
 	lastPinnedLocation: Joi.string().required(),
@@ -25,7 +25,7 @@ const updatePetSchema = Joi.object({
 	petName: Joi.string().min(3),
 	species: Joi.string().min(3),
 	breed: Joi.string().min(3),
-	birthDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY']),
+	birthDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD']),
 	color: Joi.string().min(3),
 	weight: Joi.string(),
 	lastPinnedLocation: Joi.string(),
@@ -41,7 +41,7 @@ const validatePet = (data, isUpdate = false) => {
 const validateReminder = (data) => {
 	const schema = Joi.object({
 		reminderNote: Joi.string().min(3).required(),
-		reminderDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY']).required(),
+		reminderDate: Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD']).required(),
 		petId: Joi.number().required(),
 	});
 	const { error, value } = schema.validate(data);

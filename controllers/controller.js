@@ -144,7 +144,7 @@ const updatePetController = asyncHandler(async (req, res) => {
 
 	const { petId } = req.params;
 	const { petName, species, breed, birthDate, color, weight, lastPinnedLocation, petImg } = value;
-
+	console.log(value);
 	try {
 		const pet = await prisma.pet.findUnique({
 			where: {
@@ -185,7 +185,7 @@ const updatePetController = asyncHandler(async (req, res) => {
 
 const deletePetController = asyncHandler(async (req, res) => {
 	const { petId } = req.params;
-	console;
+
 	try {
 		const pet = await prisma.pet.findUnique({
 			where: {
@@ -196,6 +196,22 @@ const deletePetController = asyncHandler(async (req, res) => {
 
 		if (!pet) {
 			return res.status(404).json({ message: 'Pet not found!' });
+		}
+
+		// delete all reminders associated with the pet
+
+		const reminders = await prisma.reminder.findMany({
+			where: {
+				petId: parseInt(petId),
+			},
+		});
+
+		if (reminders.length > 0) {
+			await prisma.reminder.deleteMany({
+				where: {
+					petId: parseInt(petId),
+				},
+			});
 		}
 
 		const deletedPet = await prisma.pet.delete({
@@ -211,22 +227,45 @@ const deletePetController = asyncHandler(async (req, res) => {
 });
 
 // @desc 	   Get all pets
-// @route      GET /api/getpets
+// @route      GET /api/getpets?page=page
 // @access     Private
 
 const getPetsController = asyncHandler(async (req, res) => {
+	const { page } = req.query;
+
 	try {
+		if (!page) {
+			const pets = await prisma.pet.findMany({
+				where: {
+					ownerId: req.user.id,
+				},
+			});
+			if (pets.length === 0) {
+				return res.status(404).json({ message: 'No pets found!' });
+			}
+
+			return res.status(200).json({ message: 'success', data: pets });
+		}
+
 		const pets = await prisma.pet.findMany({
 			where: {
 				ownerId: req.user.id,
 			},
+			skip: page ? (parseInt(page) - 1) * 6 : 0,
+			take: 6,
 		});
 
 		if (pets.length === 0) {
 			return res.status(404).json({ message: 'No pets found!' });
 		}
 
-		res.status(200).json({ message: 'success', data: pets });
+		const count = await prisma.pet.count({
+			where: {
+				ownerId: req.user.id,
+			},
+		});
+
+		res.status(200).json({ message: 'success', data: pets, count });
 	} catch (error) {
 		res.status(500).json({ error: error.message, message: 'Internal Server Error' });
 	}
@@ -301,6 +340,9 @@ const getRemindersController = asyncHandler(async (req, res) => {
 		let remindersQuery = {
 			where: {
 				userId,
+			},
+			include: {
+				pet: true,
 			},
 		};
 
