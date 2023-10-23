@@ -6,20 +6,22 @@ const cors = require('cors');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const cookieParser = require('cookie-parser');
 
-app.use(
-	cors({
-		credentials: true,
-		origin: 'https://pet-platform.netlify.app',
-	})
-);
-
 app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', 'https://pet-platform.netlify.app');
 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-	res.header('Access-Control-Allow-Credentials', true);
+	res.header('Access-Control-Allow-Credentials', 'true');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, HEAD, DELETE');
 	next();
 });
+
+app.use(
+	cors({
+		origin: 'https://pet-platform.netlify.app',
+		credentials: true,
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		allowedHeaders: 'Content-Type, Authorization',
+	})
+);
 
 app.use(cookieParser());
 app.use(express.json());
