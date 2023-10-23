@@ -6,19 +6,18 @@ const cors = require('cors');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const cookieParser = require('cookie-parser');
 
-app.use(cookieParser());
 app.use(
 	cors({
-		origin: 'https://pet-platform.netlify.app/',
+		origin: 'https://pet-platform.netlify.app',
 		credentials: true,
 	})
 );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/api', router);
-
 app.use(notFound);
 app.use(errorHandler);
 
