@@ -10,6 +10,8 @@ app.use(
 	cors({
 		origin: 'https://pet-platform.netlify.app',
 		credentials: true,
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		allowedHeaders: 'Content-Type,Authorization',
 	})
 );
 
